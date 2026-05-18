@@ -67,16 +67,7 @@ def load_config():
             return defaults
     except Exception:
         pass
-    defaults = _cfg_defaults()
-    try:
-        keys_from_secrets = [st.secrets.get(f"groq_key_{i+1}", "") for i in range(5)]
-        if any(k.strip() for k in keys_from_secrets):
-            defaults["groq_keys"] = keys_from_secrets
-        if st.secrets.get("fj_token", "").strip():
-            defaults["fj_token"] = st.secrets["fj_token"]
-    except Exception:
-        pass
-    return defaults
+    return _cfg_defaults()
 
 def save_config():
     keys_to_save = ["groq_keys","rss_urls","ticker_bar_symbols","gamma_instruments",
@@ -172,14 +163,20 @@ section[data-testid="stSidebar"]{background:var(--bg2)!important;border-right:1p
 .block-container{padding:0.5rem 1rem 2rem 1rem!important;max-width:100%!important;}
 #MainMenu{visibility:hidden;}footer{visibility:hidden;}
 header[data-testid="stHeader"]{background:transparent!important;height:auto!important;visibility:visible!important;z-index:999998!important;}
-[data-testid="collapsedControl"],button[data-testid="collapsedControl"]{display:flex!important;visibility:visible!important;opacity:1!important;z-index:999999!important;position:fixed!important;top:12px!important;left:12px!important;background:linear-gradient(135deg,#EFA500 0%,#FFB800 100%)!important;border-radius:6px!important;padding:8px 12px!important;color:#000!important;box-shadow:0 4px 12px rgba(239,165,0,0.4),0 0 0 2px rgba(0,0,0,0.5)!important;cursor:pointer!important;transition:all 0.2s ease!important;width:auto!important;height:auto!important;min-width:44px!important;min-height:44px!important;border:none!important;}
-[data-testid="collapsedControl"]:hover,button[data-testid="collapsedControl"]:hover{background:linear-gradient(135deg,#FFB800 0%,#EFA500 100%)!important;transform:scale(1.08)!important;box-shadow:0 6px 20px rgba(239,165,0,0.6)!important;}
-[data-testid="collapsedControl"]::before{content:"☰ MENU"!important;color:#000!important;font-weight:800!important;font-size:13px!important;font-family:'Barlow Condensed',sans-serif!important;letter-spacing:1px!important;margin-right:6px!important;}
+[data-testid="collapsedControl"],button[data-testid="collapsedControl"]{display:flex!important;align-items:center!important;visibility:visible!important;opacity:1!important;z-index:999999!important;position:fixed!important;top:12px!important;left:12px!important;background:linear-gradient(135deg,#EFA500 0%,#FFB800 100%)!important;border-radius:6px!important;padding:8px 14px!important;color:#000!important;box-shadow:0 4px 12px rgba(239,165,0,0.4)!important;cursor:pointer!important;transition:all 0.2s ease!important;min-width:44px!important;min-height:36px!important;border:none!important;width:auto!important;height:auto!important;}
+[data-testid="collapsedControl"]:hover,button[data-testid="collapsedControl"]:hover{background:linear-gradient(135deg,#FFB800 0%,#EFA500 100%)!important;transform:scale(1.05)!important;box-shadow:0 6px 20px rgba(239,165,0,0.6)!important;}
+[data-testid="collapsedControl"]::before{content:"☰ MENU"!important;color:#000!important;font-weight:800!important;font-size:12px!important;font-family:'Barlow Condensed',sans-serif!important;letter-spacing:1px!important;}
 [data-testid="collapsedControl"] svg{display:none!important;}
-section[data-testid="stSidebar"] button[data-testid="baseButton-header"],section[data-testid="stSidebar"] [data-testid="stSidebarCollapseButton"]{display:flex!important;visibility:visible!important;opacity:1!important;position:fixed!important;top:12px!important;left:12px!important;z-index:999999!important;background:linear-gradient(135deg,#EFA500 0%,#FFB800 100%)!important;border-radius:6px!important;padding:8px 12px!important;color:#000!important;box-shadow:0 4px 12px rgba(239,165,0,0.4),0 0 0 2px rgba(0,0,0,0.5)!important;cursor:pointer!important;transition:all 0.2s ease!important;min-width:44px!important;min-height:44px!important;border:none!important;}
-section[data-testid="stSidebar"] button[data-testid="baseButton-header"]:hover,section[data-testid="stSidebar"] [data-testid="stSidebarCollapseButton"]:hover{background:linear-gradient(135deg,#FFB800 0%,#EFA500 100%)!important;transform:scale(1.08)!important;box-shadow:0 6px 20px rgba(239,165,0,0.6)!important;}
-section[data-testid="stSidebar"] button[data-testid="baseButton-header"] svg,section[data-testid="stSidebar"] [data-testid="stSidebarCollapseButton"] svg{display:none!important;}
-section[data-testid="stSidebar"] button[data-testid="baseButton-header"]::before,section[data-testid="stSidebar"] [data-testid="stSidebarCollapseButton"]::before{content:"✕ FECHAR"!important;color:#000!important;font-weight:800!important;font-size:13px!important;font-family:'Barlow Condensed',sans-serif!important;letter-spacing:1px!important;}
+section[data-testid="stSidebar"] [data-testid="stSidebarCollapseButton"],section[data-testid="stSidebar"] button[kind="header"]{display:flex!important;align-items:center!important;justify-content:center!important;visibility:visible!important;opacity:1!important;position:fixed!important;top:12px!important;left:12px!important;z-index:999999!important;background:linear-gradient(135deg,#EFA500 0%,#FFB800 100%)!important;border-radius:6px!important;padding:8px 14px!important;min-width:44px!important;min-height:36px!important;border:none!important;cursor:pointer!important;transition:all 0.2s ease!important;box-shadow:0 4px 12px rgba(239,165,0,0.4)!important;}
+section[data-testid="stSidebar"] [data-testid="stSidebarCollapseButton"]:hover,section[data-testid="stSidebar"] button[kind="header"]:hover{transform:scale(1.05)!important;box-shadow:0 6px 20px rgba(239,165,0,0.6)!important;}
+section[data-testid="stSidebar"] [data-testid="stSidebarCollapseButton"] svg,section[data-testid="stSidebar"] button[kind="header"] svg{display:none!important;}
+section[data-testid="stSidebar"] [data-testid="stSidebarCollapseButton"]::before,section[data-testid="stSidebar"] button[kind="header"]::before{content:"✕ FECHAR"!important;color:#000!important;font-weight:800!important;font-size:12px!important;font-family:'Barlow Condensed',sans-serif!important;letter-spacing:1px!important;}
+div[data-testid="stSpinner"],div[data-testid="stStatusWidget"]{display:none!important;}
+.stApp [data-testid="stMain"]{transition:none!important;}
+.stApp::after,.stApp::before{display:none!important;}
+div[class*="overlayContainer"],div[class*="overlay"]{display:none!important;opacity:0!important;}
+section[data-testid="stSidebar"] .stButton button{background:#1C2128!important;border:1px solid #30363D!important;color:#E6EDF3!important;font-family:'Barlow Condensed',sans-serif!important;font-weight:700!important;font-size:13px!important;letter-spacing:0.5px!important;padding:8px 12px!important;border-radius:4px!important;text-align:left!important;transition:all 0.15s ease!important;}
+section[data-testid="stSidebar"] .stButton button:hover{background:#EFA500!important;color:#000!important;border-color:#EFA500!important;}
 .ticker-bar{display:grid;grid-template-columns:repeat(8,1fr);background:var(--bg2);border-bottom:2px solid var(--amber);border-top:1px solid var(--border);margin-bottom:4px;}
 .tc{padding:8px 10px;text-align:center;border-right:1px solid var(--border);}
 .tc:last-child{border-right:none;}
