@@ -206,18 +206,6 @@ section[data-testid="stSidebar"]{background:var(--bg2)!important;border-right:1p
 .block-container{padding:0.5rem 1rem 2rem 1rem!important;max-width:100%!important;}
 #MainMenu{visibility:hidden;}footer{visibility:hidden;}
 header[data-testid="stHeader"]{background:transparent!important;height:auto!important;visibility:visible!important;z-index:999998!important;}
-[data-testid="collapsedControl"],button[data-testid="collapsedControl"]{display:flex!important;align-items:center!important;visibility:visible!important;opacity:1!important;z-index:999999!important;position:fixed!important;top:12px!important;left:12px!important;background:linear-gradient(135deg,#EFA500 0%,#FFB800 100%)!important;border-radius:6px!important;padding:8px 14px!important;color:#000!important;box-shadow:0 4px 12px rgba(239,165,0,0.4)!important;cursor:pointer!important;transition:all 0.2s ease!important;min-width:44px!important;min-height:36px!important;border:none!important;width:auto!important;height:auto!important;}
-[data-testid="collapsedControl"]:hover,button[data-testid="collapsedControl"]:hover{background:linear-gradient(135deg,#FFB800 0%,#EFA500 100%)!important;transform:scale(1.05)!important;box-shadow:0 6px 20px rgba(239,165,0,0.6)!important;}
-[data-testid="collapsedControl"]::before{content:"☰ MENU"!important;color:#000!important;font-weight:800!important;font-size:12px!important;font-family:'Barlow Condensed',sans-serif!important;letter-spacing:1px!important;}
-[data-testid="collapsedControl"] svg{display:none!important;}
-section[data-testid="stSidebar"] [data-testid="stSidebarCollapseButton"],section[data-testid="stSidebar"] button[kind="header"]{display:flex!important;align-items:center!important;justify-content:center!important;visibility:visible!important;opacity:1!important;position:fixed!important;top:12px!important;left:12px!important;z-index:999999!important;background:linear-gradient(135deg,#EFA500 0%,#FFB800 100%)!important;border-radius:6px!important;padding:8px 14px!important;min-width:44px!important;min-height:36px!important;border:none!important;cursor:pointer!important;transition:all 0.2s ease!important;box-shadow:0 4px 12px rgba(239,165,0,0.4)!important;}
-section[data-testid="stSidebar"] [data-testid="stSidebarCollapseButton"]:hover,section[data-testid="stSidebar"] button[kind="header"]:hover{transform:scale(1.05)!important;box-shadow:0 6px 20px rgba(239,165,0,0.6)!important;}
-section[data-testid="stSidebar"] [data-testid="stSidebarCollapseButton"] svg,section[data-testid="stSidebar"] button[kind="header"] svg{display:none!important;}
-section[data-testid="stSidebar"] [data-testid="stSidebarCollapseButton"]::before,section[data-testid="stSidebar"] button[kind="header"]::before{content:"✕ FECHAR"!important;color:#000!important;font-weight:800!important;font-size:12px!important;font-family:'Barlow Condensed',sans-serif!important;letter-spacing:1px!important;}
-div[data-testid="stSpinner"],div[data-testid="stStatusWidget"]{display:none!important;}
-.stApp [data-testid="stMain"]{transition:none!important;}
-.stApp::after,.stApp::before{display:none!important;}
-div[class*="overlayContainer"],div[class*="overlay"]{display:none!important;opacity:0!important;}
 section[data-testid="stSidebar"] .stButton button{background:#1C2128!important;border:1px solid #30363D!important;color:#E6EDF3!important;font-family:'Barlow Condensed',sans-serif!important;font-weight:700!important;font-size:13px!important;letter-spacing:0.5px!important;padding:8px 12px!important;border-radius:4px!important;text-align:left!important;transition:all 0.15s ease!important;}
 section[data-testid="stSidebar"] .stButton button:hover{background:#EFA500!important;color:#000!important;border-color:#EFA500!important;}
 .ticker-bar{display:grid;grid-template-columns:repeat(8,1fr);background:var(--bg2);border-bottom:2px solid var(--amber);border-top:1px solid var(--border);margin-bottom:4px;}
@@ -385,6 +373,48 @@ st.markdown("""
 (function(){let v=document.querySelector('meta[name="viewport"]');if(!v){v=document.createElement('meta');v.name='viewport';document.head.appendChild(v);}v.content='width=device-width,initial-scale=1.0,maximum-scale=5.0,user-scalable=yes';})();
 (function(){const H=['[data-testid="stStatusWidget"]','[data-testid="stDecoration"]','[data-testid="stToolbar"]','div[data-baseweb="notification"]'];function k(){H.forEach(s=>{try{document.querySelectorAll(s).forEach(e=>{e.style.display='none';e.style.opacity='0';});}catch(e){}});}k();setInterval(k,300);new MutationObserver(k).observe(document.documentElement,{childList:true,subtree:true});})();
 (function(){let isR=false;document.addEventListener('click',function(e){if(isR)return;const t=e.target.closest('button[data-testid="stTab"]');if(t){const tabs=Array.from(document.querySelectorAll('button[data-testid="stTab"]'));const idx=tabs.indexOf(t);if(idx>=0){try{sessionStorage.setItem('qt_tab_idx',String(idx));}catch(e){}}}},true);function restoreTab(){if(isR)return;try{const si=parseInt(sessionStorage.getItem('qt_tab_idx')||'0');if(si<=0)return;const tabs=document.querySelectorAll('button[data-testid="stTab"]');if(tabs.length<=si)return;const tt=tabs[si];if(tt.getAttribute('aria-selected')==='true')return;isR=true;tt.click();setTimeout(()=>{isR=false;},300);}catch(e){isR=false;}}new MutationObserver(function(muts){for(const m of muts){for(const n of m.addedNodes){if(n.nodeType!==1)continue;if((n.matches&&n.matches('div[data-baseweb="tab-list"]'))||(n.querySelector&&n.querySelector('div[data-baseweb="tab-list"]'))){setTimeout(restoreTab,150);return;}}}}).observe(document.body,{childList:true,subtree:true});window.addEventListener('load',()=>setTimeout(restoreTab,200));})();
+(function(){
+  var BTN_STYLE='position:fixed;top:12px;left:12px;z-index:2147483647;background:linear-gradient(135deg,#EFA500,#FFB800);color:#000;font-family:"Barlow Condensed",sans-serif;font-weight:800;font-size:13px;letter-spacing:1px;border:none;border-radius:6px;padding:8px 16px;cursor:pointer;box-shadow:0 4px 12px rgba(239,165,0,0.45);transition:transform .15s,box-shadow .15s;';
+  function getSidebar(){return document.querySelector('section[data-testid="stSidebar"]');}
+  function isOpen(){var sb=getSidebar();if(!sb)return false;var r=sb.getBoundingClientRect();return r.left>-50;}
+  function findNativeBtn(){
+    var sel=['[data-testid="stSidebarCollapseButton"] button','[data-testid="collapsedControl"]','button[data-testid="collapsedControl"]','section[data-testid="stSidebar"] button[kind="header"]','[data-testid="stSidebarNav"] ~ div button'];
+    for(var i=0;i<sel.length;i++){var el=document.querySelector(sel[i]);if(el)return el;}
+    return null;
+  }
+  function createBtn(){
+    if(document.getElementById('qt-sidebar-btn'))return;
+    var b=document.createElement('button');
+    b.id='qt-sidebar-btn';
+    b.style.cssText=BTN_STYLE;
+    b.textContent=isOpen()?'✕ FECHAR':'☰ MENU';
+    b.addEventListener('mouseenter',function(){b.style.transform='scale(1.06)';b.style.boxShadow='0 6px 20px rgba(239,165,0,0.65)';});
+    b.addEventListener('mouseleave',function(){b.style.transform='scale(1)';b.style.boxShadow='0 4px 12px rgba(239,165,0,0.45)';});
+    b.addEventListener('click',function(){
+      var nb=findNativeBtn();
+      if(nb){nb.click();}
+      else{
+        var sb=getSidebar();
+        if(sb){sb.style.transform=isOpen()?'translateX(-105%)':'translateX(0)';sb.style.transition='transform .3s ease';}
+      }
+      setTimeout(updateBtn,200);
+    });
+    document.body.appendChild(b);
+  }
+  function updateBtn(){
+    var b=document.getElementById('qt-sidebar-btn');
+    if(!b)return;
+    b.textContent=isOpen()?'✕ FECHAR':'☰ MENU';
+  }
+  function hideNativeBtns(){
+    var sel=['[data-testid="stSidebarCollapseButton"]','[data-testid="collapsedControl"]','section[data-testid="stSidebar"] button[kind="header"]'];
+    sel.forEach(function(s){document.querySelectorAll(s).forEach(function(el){el.style.visibility='hidden';el.style.opacity='0';el.style.pointerEvents='none';});});
+  }
+  function init(){createBtn();hideNativeBtns();updateBtn();}
+  if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',function(){setTimeout(init,800);});}else{setTimeout(init,800);}
+  setInterval(function(){if(!document.getElementById('qt-sidebar-btn'))createBtn();hideNativeBtns();updateBtn();},500);
+  new MutationObserver(function(){if(!document.getElementById('qt-sidebar-btn'))createBtn();hideNativeBtns();updateBtn();}).observe(document.documentElement,{childList:true,subtree:true});
+})();
 </script>
 """, unsafe_allow_html=True)
 
