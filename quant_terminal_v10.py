@@ -374,46 +374,57 @@ st.markdown("""
 (function(){const H=['[data-testid="stStatusWidget"]','[data-testid="stDecoration"]','[data-testid="stToolbar"]','div[data-baseweb="notification"]'];function k(){H.forEach(s=>{try{document.querySelectorAll(s).forEach(e=>{e.style.display='none';e.style.opacity='0';});}catch(e){}});}k();setInterval(k,300);new MutationObserver(k).observe(document.documentElement,{childList:true,subtree:true});})();
 (function(){let isR=false;document.addEventListener('click',function(e){if(isR)return;const t=e.target.closest('button[data-testid="stTab"]');if(t){const tabs=Array.from(document.querySelectorAll('button[data-testid="stTab"]'));const idx=tabs.indexOf(t);if(idx>=0){try{sessionStorage.setItem('qt_tab_idx',String(idx));}catch(e){}}}},true);function restoreTab(){if(isR)return;try{const si=parseInt(sessionStorage.getItem('qt_tab_idx')||'0');if(si<=0)return;const tabs=document.querySelectorAll('button[data-testid="stTab"]');if(tabs.length<=si)return;const tt=tabs[si];if(tt.getAttribute('aria-selected')==='true')return;isR=true;tt.click();setTimeout(()=>{isR=false;},300);}catch(e){isR=false;}}new MutationObserver(function(muts){for(const m of muts){for(const n of m.addedNodes){if(n.nodeType!==1)continue;if((n.matches&&n.matches('div[data-baseweb="tab-list"]'))||(n.querySelector&&n.querySelector('div[data-baseweb="tab-list"]'))){setTimeout(restoreTab,150);return;}}}}).observe(document.body,{childList:true,subtree:true});window.addEventListener('load',()=>setTimeout(restoreTab,200));})();
 (function(){
-  var BTN_STYLE='position:fixed;top:12px;left:12px;z-index:2147483647;background:linear-gradient(135deg,#EFA500,#FFB800);color:#000;font-family:"Barlow Condensed",sans-serif;font-weight:800;font-size:13px;letter-spacing:1px;border:none;border-radius:6px;padding:8px 16px;cursor:pointer;box-shadow:0 4px 12px rgba(239,165,0,0.45);transition:transform .15s,box-shadow .15s;';
-  function getSidebar(){return document.querySelector('section[data-testid="stSidebar"]');}
-  function isOpen(){var sb=getSidebar();if(!sb)return false;var r=sb.getBoundingClientRect();return r.left>-50;}
-  function findNativeBtn(){
-    var sel=['[data-testid="stSidebarCollapseButton"] button','[data-testid="collapsedControl"]','button[data-testid="collapsedControl"]','section[data-testid="stSidebar"] button[kind="header"]','[data-testid="stSidebarNav"] ~ div button'];
-    for(var i=0;i<sel.length;i++){var el=document.querySelector(sel[i]);if(el)return el;}
-    return null;
+  var S='position:fixed;top:12px;left:12px;z-index:2147483647;background:linear-gradient(135deg,#EFA500,#FFB800);color:#000;font-family:"Barlow Condensed",sans-serif;font-weight:800;font-size:13px;letter-spacing:1px;border:none;border-radius:6px;padding:8px 16px;cursor:pointer;box-shadow:0 4px 12px rgba(239,165,0,0.45);transition:transform .15s,box-shadow .15s;line-height:1;';
+  function isOpen(){
+    var sb=document.querySelector('section[data-testid="stSidebar"]');
+    if(!sb)return false;
+    return !sb.classList.contains('st-emotion-cache-collapsed') && sb.getBoundingClientRect().width > 50;
   }
-  function createBtn(){
-    if(document.getElementById('qt-sidebar-btn'))return;
-    var b=document.createElement('button');
-    b.id='qt-sidebar-btn';
-    b.style.cssText=BTN_STYLE;
-    b.textContent=isOpen()?'✕ FECHAR':'☰ MENU';
-    b.addEventListener('mouseenter',function(){b.style.transform='scale(1.06)';b.style.boxShadow='0 6px 20px rgba(239,165,0,0.65)';});
-    b.addEventListener('mouseleave',function(){b.style.transform='scale(1)';b.style.boxShadow='0 4px 12px rgba(239,165,0,0.45)';});
-    b.addEventListener('click',function(){
-      var nb=findNativeBtn();
-      if(nb){nb.click();}
-      else{
-        var sb=getSidebar();
-        if(sb){sb.style.transform=isOpen()?'translateX(-105%)':'translateX(0)';sb.style.transition='transform .3s ease';}
-      }
-      setTimeout(updateBtn,200);
-    });
-    document.body.appendChild(b);
+  function clickNative(){
+    /* Streamlit 1.57: botão fechar fica dentro de .stSidebarCollapseButton */
+    var sel=[
+      '.stSidebarCollapseButton button',
+      '.stSidebarHeader button',
+      '[data-testid="stSidebarCollapseButton"] button',
+      '[data-testid="collapsedControl"]',
+      'button[data-testid="collapsedControl"]',
+      'section[data-testid="stSidebar"] header button'
+    ];
+    for(var i=0;i<sel.length;i++){
+      var el=document.querySelector(sel[i]);
+      if(el){el.click();return true;}
+    }
+    return false;
   }
   function updateBtn(){
-    var b=document.getElementById('qt-sidebar-btn');
+    var b=document.getElementById('qt-sb-btn');
     if(!b)return;
     b.textContent=isOpen()?'✕ FECHAR':'☰ MENU';
   }
-  function hideNativeBtns(){
-    var sel=['[data-testid="stSidebarCollapseButton"]','[data-testid="collapsedControl"]','section[data-testid="stSidebar"] button[kind="header"]'];
-    sel.forEach(function(s){document.querySelectorAll(s).forEach(function(el){el.style.visibility='hidden';el.style.opacity='0';el.style.pointerEvents='none';});});
+  function createBtn(){
+    if(document.getElementById('qt-sb-btn'))return;
+    var b=document.createElement('button');
+    b.id='qt-sb-btn';
+    b.style.cssText=S;
+    b.textContent=isOpen()?'✕ FECHAR':'☰ MENU';
+    b.onmouseenter=function(){b.style.transform='scale(1.06)';b.style.boxShadow='0 6px 20px rgba(239,165,0,0.65)';};
+    b.onmouseleave=function(){b.style.transform='';b.style.boxShadow='0 4px 12px rgba(239,165,0,0.45)';};
+    b.onclick=function(){clickNative();setTimeout(updateBtn,350);setTimeout(updateBtn,700);};
+    document.body.appendChild(b);
   }
-  function init(){createBtn();hideNativeBtns();updateBtn();}
-  if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',function(){setTimeout(init,800);});}else{setTimeout(init,800);}
-  setInterval(function(){if(!document.getElementById('qt-sidebar-btn'))createBtn();hideNativeBtns();updateBtn();},500);
-  new MutationObserver(function(){if(!document.getElementById('qt-sidebar-btn'))createBtn();hideNativeBtns();updateBtn();}).observe(document.documentElement,{childList:true,subtree:true});
+  function tick(){
+    createBtn();
+    /* Esconder os botões nativos */
+    ['.stSidebarCollapseButton','[data-testid="collapsedControl"]'].forEach(function(sel){
+      document.querySelectorAll(sel).forEach(function(el){
+        el.style.cssText='visibility:hidden!important;opacity:0!important;pointer-events:none!important;';
+      });
+    });
+    updateBtn();
+  }
+  setTimeout(tick,900);
+  setInterval(tick,600);
+  new MutationObserver(tick).observe(document.documentElement,{childList:true,subtree:true});
 })();
 </script>
 """, unsafe_allow_html=True)
