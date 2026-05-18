@@ -207,8 +207,15 @@ section[data-testid="stSidebar"]{background:var(--bg2)!important;border-right:1p
 .block-container{padding:0.5rem 1rem 2rem 1rem!important;max-width:100%!important;}
 #MainMenu{visibility:hidden;}footer{visibility:hidden;}
 header[data-testid="stHeader"]{background:transparent!important;height:auto!important;visibility:visible!important;z-index:999998!important;}
-section[data-testid="stSidebar"] .stButton button{background:#1C2128!important;border:1px solid #30363D!important;color:#E6EDF3!important;font-family:'Barlow Condensed',sans-serif!important;font-weight:700!important;font-size:13px!important;letter-spacing:0.5px!important;padding:8px 12px!important;border-radius:4px!important;text-align:left!important;transition:all 0.15s ease!important;}
-section[data-testid="stSidebar"] .stButton button:hover{background:#EFA500!important;color:#000!important;border-color:#EFA500!important;}
+div.stButton>button,section[data-testid="stSidebar"] .stButton button{background:#1C2128!important;border:1px solid #30363D!important;color:#E6EDF3!important;font-family:'Barlow Condensed',sans-serif!important;font-weight:700!important;font-size:13px!important;letter-spacing:0.5px!important;padding:8px 12px!important;border-radius:4px!important;transition:all 0.15s ease!important;}
+div.stButton>button:hover,section[data-testid="stSidebar"] .stButton button:hover{background:#EFA500!important;color:#000!important;border-color:#EFA500!important;}
+div.stButton>button:focus,div.stButton>button:active{background:#1C2128!important;color:#E6EDF3!important;border-color:#EFA500!important;box-shadow:0 0 0 2px rgba(239,165,0,0.3)!important;}
+div[data-testid="stExpander"]{background:#1C2128!important;border:1px solid #30363D!important;border-radius:4px!important;}
+div[data-testid="stExpander"] summary{background:#1C2128!important;color:#E6EDF3!important;}
+div[data-testid="stExpander"]:hover summary{border-color:#EFA500!important;}
+div.stNumberInput>div{background:#0D1117!important;border:1px solid #30363D!important;border-radius:4px!important;}
+div.stNumberInput button{background:#1C2128!important;border:none!important;color:#E6EDF3!important;}
+div.stNumberInput button:hover{background:#EFA500!important;color:#000!important;}
 .ticker-bar{display:grid;grid-template-columns:repeat(8,1fr);background:var(--bg2);border-bottom:2px solid var(--amber);border-top:1px solid var(--border);margin-bottom:4px;}
 .tc{padding:8px 10px;text-align:center;border-right:1px solid var(--border);}
 .tc:last-child{border-right:none;}
