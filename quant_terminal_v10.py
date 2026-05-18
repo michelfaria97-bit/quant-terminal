@@ -67,7 +67,16 @@ def load_config():
             return defaults
     except Exception:
         pass
-    return _cfg_defaults()
+    defaults = _cfg_defaults()
+    try:
+        keys_from_secrets = [st.secrets.get(f"groq_key_{i+1}", "") for i in range(5)]
+        if any(k.strip() for k in keys_from_secrets):
+            defaults["groq_keys"] = keys_from_secrets
+        if st.secrets.get("fj_token", "").strip():
+            defaults["fj_token"] = st.secrets["fj_token"]
+    except Exception:
+        pass
+    return defaults
 
 def save_config():
     keys_to_save = ["groq_keys","rss_urls","ticker_bar_symbols","gamma_instruments",
@@ -87,6 +96,40 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded"
 )
+
+# ─── AUTENTICAÇÃO ─────────────────────────────────────────────────────────────
+def _check_password():
+    try:
+        senha_correta = st.secrets.get("app_password", "")
+    except Exception:
+        senha_correta = ""
+    if not senha_correta:
+        return True  # sem senha configurada, libera acesso
+    if st.session_state.get("_autenticado"):
+        return True
+    st.markdown("""
+    <style>
+    .auth-wrap{display:flex;align-items:center;justify-content:center;min-height:80vh;}
+    .auth-box{background:#161B22;border:1px solid #30363D;border-top:3px solid #EFA500;padding:40px 48px;border-radius:8px;width:100%;max-width:380px;text-align:center;}
+    .auth-title{font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:800;color:#EFA500;letter-spacing:2px;margin-bottom:4px;}
+    .auth-sub{font-family:'JetBrains Mono',monospace;font-size:11px;color:#A8B3BD;margin-bottom:28px;}
+    </style>
+    <div class="auth-wrap"><div class="auth-box">
+    <div class="auth-title">⚡ QUANT TERMINAL</div>
+    <div class="auth-sub">v10.0 · Acesso restrito</div>
+    </div></div>
+    """, unsafe_allow_html=True)
+    pwd = st.text_input("Senha de acesso", type="password", label_visibility="collapsed",
+                        placeholder="🔒 Digite a senha...")
+    if st.button("ENTRAR", use_container_width=True):
+        if pwd == senha_correta:
+            st.session_state._autenticado = True
+            st.rerun()
+        else:
+            st.error("Senha incorreta.")
+    st.stop()
+
+_check_password()
 
 AI_REFRESH_INTERVAL     = 3600
 NEWS_REFRESH_INTERVAL   = 60
