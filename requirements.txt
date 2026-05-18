@@ -1,0 +1,7 @@
+yfinance
+groq
+feedparser
+pandas
+requests
+streamlit
+streamlit-autorefresh
